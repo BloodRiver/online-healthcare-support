@@ -1,0 +1,508 @@
+{% extends 'medicinemanager/base.html' %}
+
+{% load static %}
+
+{% block title %}Add Medicine{% endblock %}
+
+{% block css %}
+    <link rel="stylesheet" type="text/css" href="{% static 'medicinemanager/css/attendant_add_medicine.css' %}">
+{% endblock %}
+
+{% block body %}
+
+<!-- Modal Backdrop -->
+<div id="add_manufacturer_modal" class="modal-overlay fixed inset-0 bg-gray-900/60 backdrop-blur-sm z-[100] flex items-center justify-center p-4 invisible opacity-0">
+    <!-- Modal Content -->
+    <div class="modal-container bg-white w-full max-w-sm rounded-[2.5rem] overflow-hidden shadow-2xl scale-90">
+        <div class="p-6 pb-0 flex justify-end">
+            <button id="close_modal_btn" class="w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 text-gray-400 transition-colors">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+
+        <div class="px-8 pb-10 text-center">
+            <div class="w-16 h-16 bg-green-50 text-success-custom rounded-2xl flex items-center justify-center mx-auto mb-4">
+                <i class="fa-solid fa-plus text-2xl"></i>
+            </div>
+            <h2 class="text-xl font-bold text-gray-800">New Manufacturer</h2>
+            <p class="text-gray-500 text-sm mt-1 mb-6">Enter the full name to add to the database.</p>
+
+            <div>
+                <label class="text-xs font-bold text-gray-400 uppercase tracking-wider ml-1 mb-2 block">Name</label>
+                <input type="text" id="new_manufacturer_input" class="w-full px-5 py-3.5 bg-white border border-gray-200 rounded-2xl outline-none focus:bg-white focus-ring-custom text-gray-700 placeholder-gray-400" placeholder="e.g. Acme Pharma" required="">
+                <small class="text-red-500 hidden" id="manufacturer_name_error">Error Message Here</small>
+            </div>
+
+            <button id="add-new-manufacturer-button" type="button" class="w-full bg-success-custom text-white font-bold py-4 rounded-2xl shadow-lg shadow-green-900/20 hover:bg-green-700 transition-all active:scale-[0.98] mt-2">
+                Add to Database
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+    <!-- Add Medicine Form Card -->
+    <div class="bg-white rounded-3xl card-shadow overflow-hidden border border-gray-100 mb-12">
+        <div class="bg-success-custom p-6 text-white text-center">
+            <h1 class="text-2xl font-bold">Add New Medicine</h1>
+            <p class="text-green-100 text-sm mt-1 opacity-90">Contribute to the global medicine database</p>
+        </div>
+
+        <form name="addMedicineForm" class="p-8 space-y-6" method="POST" enctype="multipart/form-data">
+            <input type="hidden" name="csrfmiddlewaretoken" value="NHf0PUdpNwtvTF5JyyECo8xyIKd8s5121kmLy0za5GWBuLSKRQDFvLNsjN36KsJk">
+
+            <p class="text-center text-gray-400 mt-4">
+                <span class="text-red-500 font-bold">*</span> marked fields are required
+            </p>
+
+            <!-- Image Upload Section -->
+            <div id="medicine-images" class="bg-white p-6 rounded-2xl border border-dashed border-gray-300">
+                <div id="medicine-images-head" class="mb-4 flex items-center justify-between">
+                    <p class="font-bold text-gray-700 flex items-center">
+                        <i class="fa-solid fa-images mr-2 text-success-custom"></i> Medicine Images
+                    </p>
+                    <span class="text-xs text-gray-400 italic">* At least one image required</span>
+                </div>
+
+                <div id="medicine-images-body" class="space-y-4">
+                    <div class="flex flex-col">
+                        <label for="id_medicine_image_1" class="text-sm font-semibold text-gray-600 mb-2">
+                            <span class="text-red-500">*</span> Medicine Image 1
+                        </label>
+                        <input required="" name="medicine_image_1" id="id_medicine_image_1" type="file" accept="image/*" class="medicine-image-upload block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100 transition-all">
+                    </div>
+                </div>
+
+                <div id="medicine-images-foot" class="mt-4">
+                    <button id="add-images-button" type="button" class="text-sm font-bold text-success-custom hover:text-green-800 flex items-center transition-colors">
+                        <i class="fa-solid fa-circle-plus mr-1"></i> Add more images
+                    </button>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+
+                    <label for="id_name" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Name</label>
+
+                    <input type="text" name="name" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 outline-none transition-all" maxlength="300" required="" id="id_name">
+
+
+                    <ul id="errors_" hidden="" class="list-disc">
+
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+
+                    <label for="id_chemical_name" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Chemical name</label>
+
+                    <input type="text" name="chemical_name" class="w-full px-4 py-3 bg-white border border-gray-200 rounded-2xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 outline-none transition-all" maxlength="1000" required="" id="id_chemical_name">
+
+
+                    <ul id="errors_" hidden="" class="list-disc">
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+
+                    <label for="id_manufacturer_name" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Manufacturer name</label>
+
+
+                    <div class="relative" id="combobox-container-id_manufacturer_name">
+                        <div class="relative">
+                            <input type="text" name="manufacturer_name" class="w-full pl-11 pr-10 py-3.5 bg-white border border-gray-200 rounded-2xl outline-none transition-all focus:bg-white focus-ring-custom text-gray-700 placeholder-gray-400" maxlength="500" required="" aria-describedby="id_manufacturer_name_helptext" id="id_manufacturer_name" placeholder="Type to search..." autocomplete="off">
+
+                            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none">
+                                <i class="fa-solid fa-chevron-down text-xs"></i>
+                            </div>
+                        </div>
+
+
+                        <div class="search-field-options" id="search_field_options_id_manufacturer_name">
+                            <ul id="search_field_options_id_manufacturer_name_list" class="max-h-60 overflow-y-auto py-1 dropdown-scroll">
+
+                            </ul>
+                        </div>
+                    </div>
+
+
+                    <small class="text-gray-500">Don't see the manufacturer listed?
+                        <a id="add_manufacturer_link" href="javascript:void(0)" class="text-success-custom font-semibold hover:underline decoration-2 underline-offset-2 transition-all">
+                            Click here to add the new Manufacturer name to our database
+                        </a>
+                    </small>
+
+
+                    <ul id="errors_id_manufacturer_name" hidden="" class="list-disc">
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+
+                    <label for="id_medicine_group" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Medicine group</label>
+
+                    <select name="medicine_group" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" required="" id="id_medicine_group">
+                        <option value="" selected="">Select Medicine Group</option>
+
+                        <option value="1">Allopathy</option>
+
+                    </select>
+
+
+                    <ul id="errors_" hidden="" class="list-disc">
+
+                    </ul>
+                </div>
+            </div>
+
+
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+
+                    <label for="id_medicine_type" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Medicine type</label>
+
+                    <select name="medicine_type" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" required="" id="id_medicine_type">
+                        <option value="" selected="">Select Medicine Type</option>
+
+                        <option value="CAP">Capsule</option>
+
+                        <option value="CHE">Chewable Tablet</option>
+
+                        <option value="CRE">Cream</option>
+
+                        <option value="EYE">Eye Drop</option>
+
+                        <option value="LOG">Logenze</option>
+
+                        <option value="NAS">Nasal Drop</option>
+
+                        <option value="NEB">Nebulizer</option>
+
+                        <option value="OIN">Ointment</option>
+
+                        <option value="SUP">Suppository</option>
+
+                        <option value="TAB">Tablet</option>
+
+                        <option value="INJ">Intact Injection</option>
+
+                        <option value="VIA">Vial for Injection</option>
+
+                    </select>
+
+
+                    <ul id="errors_id_medicine_type" hidden="" class="list-disc">
+
+                    </ul>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    <label for="taka_per_container" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">* </span> Unit price</label>
+
+                    <div class="flex" id="taka_per_container">
+                        <input class="w-full px-4 py-3 bg-white border border-gray-200 rounded-l-lg focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 outline-none transition-all" type="number" value="0" steps="0" id="id_unit_price" name="unit_price">
+                        <span class="input-group-addon w-1/4 text-center p-3 border border-gray-300  bg-gray-200 text-gray-600">Taka per</span>
+                        <select class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-r-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" name="small_unit_type" id="id_small_unit_type">
+
+                        <option value="CAP">Capsule</option>
+
+                        <option value="CHE">Chewable Tablet</option>
+
+                        <option value="CRE">Cream</option>
+
+                        <option value="EYE">Eye Drop</option>
+
+                        <option value="LOG">Logenze</option>
+
+                        <option value="NAS">Nasal Drop</option>
+
+                        <option value="NEB">Nebulizer</option>
+
+                        <option value="OIN">Ointment</option>
+
+                        <option value="SUP">Suppository</option>
+
+                        <option value="TAB">Tablet</option>
+
+                        <option value="INJ">Intact Injection</option>
+
+                        <option value="VIA">Vial for Injection</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6" id="small_unit_per_small_container">
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">* </span> How many units per container?</label>
+
+                    <div class="flex">
+                        <input class="w-full px-4 py-3 bg-white border border-gray-200 rounded-l-lg focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 outline-none transition-all" type="number" value="0" steps="0" id="id_small_unit_value" name="small_unit_value">
+                        <select disabled="" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" name="small_unit_type2" id="id_small_unit_type2">
+                            <option value="1">Tablets</option>
+                            <option value="2" selected="">Capsules</option>
+                        </select>
+                        <span class="input-group-addon p-3 border border-gray-300  bg-gray-200 text-gray-600">per</span>
+                        <select class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-r-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" name="small_container_type" id="id_small_container_type">
+                            <option value="1" selected="">Leaf</option>
+                            <option value="2">Bottle</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 gap-6" id="small_container_per_large_container">
+                <div class="space-y-2">
+                    <label class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">* </span> How many small container per large container?</label>
+
+                    <div class="flex">
+                        <input class="w-full px-4 py-3 bg-white border border-gray-200 rounded-l-lg focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 outline-none transition-all" type="number" value="0" steps="0" id="id_small_container_value" name="small_container_value">
+                        <select disabled="" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" name="small_container_type2" id="id_small_container_type2">
+                            <option value="1" selected="">Leaves</option>
+                            <option value="2">Bottles</option>
+                        </select>
+                        <span class="input-group-addon p-3 border border-gray-300  bg-gray-200 text-gray-600">per</span>
+                        <select class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-r-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" name="large_container_type" id="id_large_container_type">
+                            <option value="1">Box</option>
+                            <option value="2">Ampule</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            <div class="flex items-center space-x-3 p-2">
+                <input type="checkbox" name="prescription_only" class="w-5 h-5 rounded border-gray-300 text-green-600 focus:ring-green-500 transition-all" id="id_prescription_only" checked="">
+                <label for="" class="text-sm font-semibold text-gray-700 cursor-pointer">Prescription only</label>
+            </div>
+
+
+            <div class="pt-4">
+                <button type="button" class="w-full py-4 bg-success-custom text-white rounded-2xl font-bold shadow-lg shadow-green-900/20 hover:opacity-90 transform active:scale-[0.98] transition-all flex items-center justify-center">
+                    <i class="fa-solid fa-plus-circle mr-2 text-lg"></i>
+                    Add Medicine to Database
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <hr class="border-gray-200 mb-12">
+
+    <!-- List Section -->
+    <div class="space-y-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+            <div>
+                <h3 class="text-2xl font-bold text-gray-800">Your Contributions</h3>
+                <p class="text-gray-500 text-sm">Click on a medicine name to edit details</p>
+            </div>
+            <button id="delete-button" disabled="" onclick="deleteSelected()" class="px-6 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-bold text-sm hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center">
+                <i class="fa-solid fa-trash-can mr-2"></i> Delete Selected
+            </button>
+        </div>
+
+        <div class="bg-white rounded-3xl card-shadow border border-gray-100 overflow-hidden">
+            <div class="custom-scrollbar overflow-x-auto">
+                <table id="medicine-database-table" class="w-full text-sm text-center">
+                    <thead>
+                        <tr class="bg-white border-b border-gray-100 text-gray-600 uppercase text-xs font-bold tracking-wider">
+                            <th class="px-6 py-4"><input type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500" onclick="selectAll(this)"></th>
+                            <th class="px-6 py-4">Medicine Name</th>
+                            <th class="px-6 py-4">Chemical Name</th>
+                            <th class="px-6 py-4">Manufacturer</th>
+                            <th class="px-6 py-4">Group</th>
+                            <th class="px-6 py-4">Type</th>
+                            <th class="px-6 py-4">Prescription Only</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-gray-50 text-gray-700 font-medium">
+                        <!-- Rows loaded via JS -->
+                        
+                        
+
+                        <tr id="medicine_5" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="5" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Cifibet</a></td>
+                            <td class="px-6 py-4 italic">Ciprofibrate BP</td>
+                            <td class="px-6 py-4">SK+F</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_3" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="3" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">D-Balance</a></td>
+                            <td class="px-6 py-4 italic">Vitamin D</td>
+                            <td class="px-6 py-4">Square Pharmaceuticals PLC</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Capsule</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_6" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="6" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Empa 10</a></td>
+                            <td class="px-6 py-4 italic">Empagliflozin INN</td>
+                            <td class="px-6 py-4">Nipro JMI Pharma Ltd.</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_7" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="7" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Epilim Chrono 500</a></td>
+                            <td class="px-6 py-4 italic">Sodium Valproate BP, Valproic Acid BP</td>
+                            <td class="px-6 py-4">Synovia</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_8" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="8" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Febustat 40</a></td>
+                            <td class="px-6 py-4 italic">Febuxostat</td>
+                            <td class="px-6 py-4">Incepta Pharma</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_9" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="9" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Latuda 40</a></td>
+                            <td class="px-6 py-4 italic">Lurasidone Hydrochloride INN</td>
+                            <td class="px-6 py-4">Healthcare Pharmaceuticals Ltd.</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_10" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="10" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">MarinCal-DX</a></td>
+                            <td class="px-6 py-4 italic">Calcium 600mg (Coral Source), Vitamin D3 400 IU</td>
+                            <td class="px-6 py-4">Incepta Pharma</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_11" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="11" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Pantonix 40</a></td>
+                            <td class="px-6 py-4 italic">Pantoprazole 40mg</td>
+                            <td class="px-6 py-4">Incepta Pharma</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+
+                        <tr id="medicine_1" class="hover:bg-white transition-colors">
+                            <td class="px-6 py-4"><input type="checkbox" value="1" class="table-checkbox rounded border-gray-300 text-green-600 focus:ring-green-500">
+                            </td>
+
+                            <td class="px-6 py-4 text-left font-bold text-success-custom"><a href="#">Perkinil</a></td>
+                            <td class="px-6 py-4 italic">Procyclidine Hydrochloride</td>
+                            <td class="px-6 py-4">Square Pharmaceuticals PLC</td>
+                            <td class="px-6 py-4">Allopathy</td>
+                            <td class="px-6 py-4">Tablet</td>
+                            <td class="px-6 py-4"><i class="fa-solid fa-circle-check text-green-500"></i>
+                            </td>
+                        </tr>
+                        
+                        
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Pagination -->
+            <div class="bg-white p-4 border-t border-gray-100 flex justify-center">
+                <div class="inline-flex rounded-xl shadow-sm">
+                    <a href="?page=1#medicine-database-table" class="px-4 py-2 text-sm font-bold text-success-custom bg-white border border-gray-200 rounded-l-xl hover:bg-white transition-colors">First</a>
+                    <a href="?page=1#medicine-database-table" class="px-4 py-2 text-sm font-bold text-white bg-success-custom border-t border-b border-success-custom">1</a>
+                    <a href="?page=1#medicine-database-table" class="px-4 py-2 text-sm font-bold text-success-custom bg-white border border-gray-200 rounded-r-xl hover:bg-white transition-colors">Last</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal (Redesigned) -->
+<div class="hidden fixed inset-0 z-[100] overflow-y-auto" id="myModal" aria-labelledby="myModalLabel" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen px-4 pt-4 pb-20 text-center sm:block sm:p-0">
+        <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" aria-hidden="true" onclick="toggleModal(false)"></div>
+        <span class="hidden sm:inline-block sm:align-middle sm:h-screen" aria-hidden="true">​</span>
+        <div class="inline-block align-bottom bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <div class="sm:flex sm:items-start">
+                    <div class="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-green-100 sm:mx-0 sm:h-10 sm:w-10">
+                        <i class="fa-solid fa-info-circle text-success-custom"></i>
+                    </div>
+                    <div class="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+                        <h3 class="text-lg leading-6 font-bold text-gray-900" id="modal-title">Modal Title</h3>
+                        <div class="mt-2" id="modal-body">
+                            <p class="text-sm text-gray-500">Modal body content goes here.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bg-white px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse" id="modal-footer">
+                <button type="button" class="w-full inline-flex justify-center rounded-xl border border-transparent shadow-sm px-4 py-2 bg-success-custom text-base font-bold text-white hover:opacity-90 focus:outline-none sm:ml-3 sm:w-auto sm:text-sm" onclick="toggleModal(false)">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+
+<script type="text/javascript" src="{% static 'medicinemanager/js/attendant_add_medicine.js' %}"></script>
+{% endblock %}

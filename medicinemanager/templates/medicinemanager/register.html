@@ -1,0 +1,241 @@
+{% extends 'medicinemanager/base.html' %}
+
+{% block title %}Create an Account{% endblock %}
+
+{% block body %}
+    <div style="width: 50%; margin: auto; margin-top: 10%; margin-bottom: 10%;">
+        <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg mx-auto">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-extrabold text-gray-900">Create an Account</h2>
+                <p class="text-sm text-gray-500 mt-2 italic">* marked fields are required</p>
+            </div>
+
+            <form method="POST" class="space-y-6" name="registerForm" enctype="multipart/form-data">
+                    <div>
+                        <label for="id_picture" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Picture
+                        </label>
+                        
+                            <div class="flex items-center justify-center w-full">
+                        <label class="flex flex-col items-center justify-center w-full h-32 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100 transition-all">
+                            <div class="flex flex-col items-center justify-center pt-5 pb-6">
+                                <i class="fa-solid fa-cloud-arrow-up text-gray-400 text-2xl mb-2"></i>
+                                <p class="text-xs text-gray-500">Click to upload profile photo</p>
+                            </div>
+                            <input type="file" name="picture" class="hidden" accept="image/*" required id="id_picture">
+                            </label>
+                    </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_username" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Username
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-at text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="text" name="username" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" maxlength="150" required id="id_username">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_first_name" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> First name
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-user text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="text" name="first_name" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" maxlength="150" required id="id_first_name">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_last_name" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Last name
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-user text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="text" name="last_name" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" maxlength="150" required id="id_last_name">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_email" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Email
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-envelope text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="email" name="email" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" required id="id_email">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_password" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Password
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-key text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="password" name="password" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" maxlength="128" required id="id_password">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_retype_password" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Retype password
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-key text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="password" name="retype_password" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" maxlength="128" required id="id_retype_password">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_date_of_birth" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Date of birth
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-calendar-days text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="date" name="date_of_birth" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" required id="id_date_of_birth">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_gender" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Gender
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-venus-mars text-gray-400"></i>
+                            </div>
+                            
+
+                            <select name="gender" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg bg-white focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all appearance-none" required id="id_gender">
+  <option value="" selected>Select Gender</option>
+
+  <option value="M">Male</option>
+
+  <option value="F">Female</option>
+
+  <option value="O">Other</option>
+
+</select>
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+                    <div>
+                        <label for="id_phone_number" class="block text-sm font-semibold text-gray-700">
+                            <span class="text-red-500">*</span> Phone number
+                        </label>
+                        
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-phone text-gray-400"></i>
+                            </div>
+                            
+
+                            <input type="text" name="phone_number" class="block w-full pl-10 pr-3 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all" maxlength="15" required id="id_phone_number">
+                            
+                            
+                        </div>
+                        
+                    </div>
+
+                
+
+                
+
+                <div>
+                    <a href="/medicinemanager/dashboard" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white btn-success-custom focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all transform hover:scale-[1.02]">
+                        Register Now
+                    </a>
+                </div>
+            </form>
+
+            <div class="mt-8 text-center">
+                <p class="text-sm text-gray-600">
+                    Already have an account? 
+                    <a href="/medicinemanager/login" class="font-bold text-green-700 hover:text-green-600 hover:underline transition-all">
+                        Log in here.
+                    </a>
+                </p>
+            </div>
+        </div>
+    </div>
+{% endblock %}

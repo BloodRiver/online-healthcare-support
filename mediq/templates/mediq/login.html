@@ -1,0 +1,109 @@
+{% extends 'mediq/layout.html' %}
+{% comment %} <?php
+
+declare(strict_types=1);
+
+require __DIR__ . '/db.php';
+require __DIR__ . '/auth.php';
+require __DIR__ . '/audit.php';
+
+if (is_logged_in()) {
+    header('Location: /index.php');
+    exit;
+}
+
+$error = '';
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $username = trim((string) ($_POST['username'] ?? ''));
+    $password = (string) ($_POST['password'] ?? '');
+
+    if ($username === '' || $password === '') {
+        $error = 'Username and password are required.';
+    } else {
+        $stmt = db()->prepare('SELECT id, username, password_hash, full_name, role, profile_image_path, is_active FROM users WHERE username = :u LIMIT 1');
+        $stmt->execute([':u' => $username]);
+        $user = $stmt->fetch();
+
+        if ($user && (int) $user['is_active'] === 1 && password_verify($password, (string) $user['password_hash'])) {
+            login_user($user);
+            write_audit_log('login_success', 'user', (int) $user['id'], ['username' => $username]);
+            header('Location: /index.php');
+            exit;
+        }
+
+        $error = 'Invalid credentials.';
+    }
+}
+?> {% endcomment %}
+
+{% block title %}Login | MediQueue AI{% endblock %}
+
+{% load static %}
+{% block css %}<link rel="stylesheet" href="{% static 'mediq/css/login.css' %}" />{% endblock %}
+
+{% block body %}
+  <main class="login-shell">
+    <section class="login-showcase">
+      <p class="showcase-tag">Clinic Operations Suite</p>
+      <h2>Welcome back to MediQueue AI</h2>
+      <p class="showcase-copy">Manage appointments, queue movement, and staff coordination in one secure dashboard.</p>
+
+      <div class="showcase-grid" aria-hidden="true">
+        <article class="showcase-card">
+          <strong>Live Queue</strong>
+          <span>Track waiting, checked-in, and in-consultation status.</span>
+        </article>
+        <article class="showcase-card">
+          <strong>Smart Booking</strong>
+          <span>Role-based booking with availability and branch rules.</span>
+        </article>
+        <article class="showcase-card">
+          <strong>Doctor Flow</strong>
+          <span>Monthly appointment calendar with day-level details.</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="login-card">
+      <div class="login-brand">
+        <img class="login-brand-logo" src="{% static 'mediq/assets/logo.svg' %}" alt="MediQueue AI logo" />
+        <h1>MediQueue AI</h1>
+      </div>
+      <p>Sign in with your role account.</p>
+
+      {% comment %} <?php if ($error !== ''): ?>
+        <div class="error"><?= htmlspecialchars($error, ENT_QUOTES) ?></div>
+      <?php endif; ?> {% endcomment %}
+
+      <form method="post">
+        <label>Username<input name="username" type="text" required /></label>
+        <label>Password
+          <div class="password-wrap">
+            <input id="loginPasswordInput" name="password" type="password" required />
+            <button type="button" class="password-toggle-btn" aria-label="Toggle password visibility" title="Show or hide password" data-toggle-password="#loginPasswordInput"></button>
+          </div>
+        </label>
+        <button type="submit">Login</button>
+        <a class="alt-link-btn" href="{% url 'mediq:index' %}">Go to Landing Page</a>
+      </form>
+    </section>
+  </main>
+{% endblock %}
+
+{% block script %}
+  <script>
+    document.addEventListener('click', function (event) {
+      const target = event.target;
+      if (!(target instanceof HTMLElement)) return;
+      if (!target.classList.contains('password-toggle-btn')) return;
+      const selector = target.getAttribute('data-toggle-password');
+      if (!selector) return;
+      const input = document.querySelector(selector);
+      if (!(input instanceof HTMLInputElement)) return;
+      const isPassword = input.type === 'password';
+      input.type = isPassword ? 'text' : 'password';
+      target.classList.toggle('is-visible', isPassword);
+      target.setAttribute('aria-label', isPassword ? 'Hide password' : 'Show password');
+    });
+  </script>
+{% endblock %}

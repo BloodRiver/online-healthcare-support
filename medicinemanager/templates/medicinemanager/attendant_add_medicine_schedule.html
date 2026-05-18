@@ -1,0 +1,617 @@
+{% extends 'medicinemanager/base.html' %}
+{% load static %}
+
+{% block title %}Add Medicine Schedule{% endblock %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'medicinemanager/attendant_add_medicine_schedule.css' %}">
+{% endblock %}
+
+{% block body %}            
+
+    <div class="flex-grow container mx-auto px-4 py-8 max-w-4xl">
+        
+        <!-- Form Container -->
+        <div class="bg-white rounded-3xl card-shadow overflow-hidden border border-gray-100 mb-10">
+            <div class="bg-success-custom p-6 text-white flex flex-col items-center">
+                <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mb-4">
+                    <i class="fa-solid fa-calendar-plus text-3xl"></i>
+                </div>
+                <h1 class="text-2xl font-bold">Add Medicine Schedule</h1>
+                <div class="mt-2 px-4 py-1 bg-white/10 rounded-full text-sm font-medium border border-white/20">
+                    Patient: <span class="font-bold">Sajeed</span>
+                </div>
+            </div>
+
+            <form id="medicineForm" class="p-8 space-y-8" method="POST" enctype="multipart/form-data">
+                <input type="hidden" name="csrfmiddlewaretoken" value="cL5knGchkdHhQCphcoxa8Q1JCKZ3tCs81k2tBVrrCjCCdy7xhDMxZ3Zspy000FHn">
+
+                <p class="text-center text-sm text-gray-700 font-bold">
+                        <span class="text-red-500 font-bold">*</span> marked fields are required
+                </p>
+                
+
+                
+    
+        
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    
+                        <label for="id_medicine_name" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Medicine name</label>
+                    
+                    <style>
+    .search-field-options {
+        display: none;
+        position: absolute;
+        z-index: 9999;
+        width: 100%;
+        background: white;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        border: 1px solid #e5e7eb;
+        border-radius: 1rem;
+        margin-top: 0.5rem;
+        overflow: hidden;
+    }
+
+    .search-field-options.visible
+    {
+        display: block;
+        animation: fadeIn 0.15s ease-out;
+    }
+
+    @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .dropdown-item:hover {
+            background-color: #f0fdf4;
+            color: #198754;
+        }
+
+        /* Custom scrollbar matching your CSS */
+        .dropdown-scroll::-webkit-scrollbar { width: 5px; }
+        .dropdown-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+        .dropdown-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+</style>
+
+<div class="relative" id="combobox-container-id_medicine_name">
+    <div class="relative">
+        <input type="text" name="medicine_name" class="w-full pl-11 pr-10 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl outline-none transition-all focus:bg-white focus-ring-custom text-gray-700 placeholder-gray-400" maxlength="300" required="" id="id_medicine_name" placeholder="Type to search..." autocomplete="off">
+
+        <div class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-300 pointer-events-none">
+            <i class="fa-solid fa-chevron-down text-xs"></i>
+        </div>
+    </div>
+    
+
+    <div class="search-field-options" id="search_field_options_id_medicine_name">
+        <ul id="search_field_options_id_medicine_name_list" class="max-h-60 overflow-y-auto py-1 dropdown-scroll">
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Perkinil</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Renovit</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">D-Balance</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Test Test</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Cifibet</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Empa 10</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Epilim Chrono 500</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Febustat 40</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Latuda 40</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">MarinCal-DX</li>
+            
+                <li class="px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700">Pantonix 40</li>
+            
+        </ul>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let options = [
+        
+            {"name": "Perkinil", "medicine_type": "Tablet"}, 
+        
+            {"name": "Renovit", "medicine_type": "Tablet"}, 
+        
+            {"name": "D-Balance", "medicine_type": "Capsule"}, 
+        
+            {"name": "Test Test", "medicine_type": "Ointment"}, 
+        
+            {"name": "Cifibet", "medicine_type": "Tablet"}, 
+        
+            {"name": "Empa 10", "medicine_type": "Tablet"}, 
+        
+            {"name": "Epilim Chrono 500", "medicine_type": "Tablet"}, 
+        
+            {"name": "Febustat 40", "medicine_type": "Tablet"}, 
+        
+            {"name": "Latuda 40", "medicine_type": "Tablet"}, 
+        
+            {"name": "MarinCal-DX", "medicine_type": "Tablet"}, 
+        
+            {"name": "Pantonix 40", "medicine_type": "Tablet"}
+        
+    ];
+
+    let input = document.getElementById('id_medicine_name');
+    let dropdown = document.getElementById("search_field_options_id_medicine_name");
+    let list = document.getElementById('search_field_options_id_medicine_name_list');
+
+    function updateResults()
+    {
+        const value = input.value.toLowerCase().trim();
+        list.innerHTML = '';
+        const filtered = options.filter(opt => opt.name.toLowerCase().includes(value));
+
+        if (filtered.length > 0)
+        {
+            filtered.forEach(item => {
+                const li = document.createElement("li");
+                li.className = "px-5 py-2.5 cursor-pointer dropdown-item transition-colors font-medium text-gray-700";
+                li.textContent = item.name;
+                li.addEventListener('mousedown', (e) => {
+                    input.value = item.name;
+                    dropdown.classList.remove('visible');
+                });
+                list.appendChild(li);
+            });
+            dropdown.classList.add('visible');
+        }
+        else
+        {
+            const li = document.createElement('li');
+            li.className = "px-5 py-4 text-gray-400 italic text-sm text-center";
+            li.innerHTML = "No matches found";
+            list.appendChild(li);
+            dropdown.classList.add('visible');
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+
+        input.addEventListener('input', updateResults);
+        input.addEventListener('focus', updateResults);
+        input.addEventListener('focusout', () =>
+        {
+            if (dropdown.classList.contains("visible"))
+            {
+                dropdown.classList.remove("visible");
+            }
+        });
+
+        document.addEventListener('click', (e) => {
+            const container = document.getElementById('combobox-container-id_medicine_name');
+
+            if (!container.contains(e.target))
+            {
+                dropdown.classList.remove('visible');
+            }
+        })
+    });
+</script>
+                    
+                        <small class="text-gray-500">Don't see the medicine listed?
+                <a id="add_medicine_link" href="{% url 'medicinemanager:attendant_add_medicine' %}" class="text-success-custom font-semibold hover:underline decoration-2 underline-offset-2 transition-all">
+                Click here to add the new Medicine to our database
+                </a>
+            </small>
+                    
+                
+                    <ul id="errors_" hidden="" class="list-disc">
+                        
+                    </ul>
+                </div>
+            </div>
+        
+    
+
+    
+        
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    
+                        <label for="id_dose" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Dose (e.g., 1 Tablet)</label>
+                    
+                    <input type="text" name="dose" value="1" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:border-green-500 focus:ring-4 focus:ring-green-500/10 outline-none transition-all" required="" id="id_dose">
+                    
+                
+                    <ul id="errors_" hidden="" class="list-disc">
+                        
+                    </ul>
+                </div>
+            </div>
+        
+    
+
+    
+        
+                
+                    <div class="space-y-2">
+                        <label for="" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Times of day</label>
+                        <div class="flex justify-end items-center space-x-4 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+    <div class="flex items-center">
+        <span class="w-3 h-3 bg-success-custom rounded-sm mr-2 shadow-sm shadow-green-900/10"></span>
+        Selected
+    </div>
+    <div class="flex items-center">
+        <span class="w-3 h-3 bg-white border border-gray-300 rounded-sm mr-2"></span>
+        Not Selected
+    </div>
+</div>
+<div class="flex flex-wrap gap-3" id="id_times_of_day">
+    
+        
+            <div class="flex-1 min-w-[120px]">
+                <input type="checkbox" name="times_of_day" value="1" id="id_times_of_day_0" class="hidden check-pill">
+                <label for="id_times_of_day_0" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    <i class="fa-solid fa-sun mr-2"></i> Morning
+                </label>
+            </div>
+        
+            <div class="flex-1 min-w-[120px]">
+                <input type="checkbox" name="times_of_day" value="2" id="id_times_of_day_1" class="hidden check-pill">
+                <label for="id_times_of_day_1" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    <i class="fa-solid fa-cloud-sun mr-2"></i> Afternoon
+                </label>
+            </div>
+        
+            <div class="flex-1 min-w-[120px]">
+                <input type="checkbox" name="times_of_day" value="3" id="id_times_of_day_2" class="hidden check-pill">
+                <label for="id_times_of_day_2" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    <i class="fa-solid fa-moon mr-2"></i> Evening
+                </label>
+            </div>
+        
+            <div class="flex-1 min-w-[120px]">
+                <input type="checkbox" name="times_of_day" value="4" id="id_times_of_day_3" class="hidden check-pill">
+                <label for="id_times_of_day_3" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    <i class="fa-solid fa-bed mr-2"></i> Night
+                </label>
+            </div>
+        
+    
+</div>
+                    </div>
+                
+
+                <ul id="errors_id_times_of_day" hidden="" class="list-disc">
+                    
+                </ul>
+                
+        
+    
+
+    
+        
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    
+                        <label for="id_consumption_rule" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Consumption rule</label>
+                    
+                    <div class="relative">
+    <select name="consumption_rule" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:border-green-500 outline-none transition-all appearance-none" required="True" id="id_consumption_rule">
+        <option value="" selected="">Select rule</option>
+        
+            
+        
+            
+                <option value="B">Before Meal</option>
+            
+        
+            
+                <option value="A">After Meal</option>
+            
+        
+    </select>
+    <i class="fa-solid fa-chevron-down absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs"></i>
+</div>
+                    
+                
+                    <ul id="errors_" hidden="" class="list-disc">
+                        
+                    </ul>
+                </div>
+            </div>
+        
+    
+
+    
+        
+                
+                    <div class="space-y-2">
+                        <label for="" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Consumption weekdays</label>
+                        <div class="flex justify-end items-center space-x-4 text-[11px] font-semibold uppercase tracking-wider text-gray-400">
+    <div class="flex items-center">
+        <span class="w-3 h-3 bg-success-custom rounded-sm mr-2 shadow-sm shadow-green-900/10"></span>
+        Selected
+    </div>
+    <div class="flex items-center">
+        <span class="w-3 h-3 bg-white border border-gray-300 rounded-sm mr-2"></span>
+        Not Selected
+    </div>
+</div>
+<div class="grid grid-cols-4 sm:grid-cols-7 gap-2" id="id_consumption_weekdays">
+    
+            
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="SUN" id="id_consumption_weekdays_0" class="hidden check-pill">
+                <label for="id_consumption_weekdays_0" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    SUN
+                </label>
+            </div>
+        
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="MON" id="id_consumption_weekdays_1" class="hidden check-pill">
+                <label for="id_consumption_weekdays_1" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    MON
+                </label>
+            </div>
+        
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="TUE" id="id_consumption_weekdays_2" class="hidden check-pill">
+                <label for="id_consumption_weekdays_2" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    TUE
+                </label>
+            </div>
+        
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="WED" id="id_consumption_weekdays_3" class="hidden check-pill">
+                <label for="id_consumption_weekdays_3" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    WED
+                </label>
+            </div>
+        
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="THU" id="id_consumption_weekdays_4" class="hidden check-pill">
+                <label for="id_consumption_weekdays_4" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    THU
+                </label>
+            </div>
+        
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="FRI" id="id_consumption_weekdays_5" class="hidden check-pill">
+                <label for="id_consumption_weekdays_5" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    FRI
+                </label>
+            </div>
+        
+            <div class="flex flex-col">
+                <input checked="" type="checkbox" name="consumption_weekdays" value="SAT" id="id_consumption_weekdays_6" class="hidden check-pill">
+                <label for="id_consumption_weekdays_6" class="flex items-center justify-center p-3 border border-gray-200 rounded-2xl text-sm font-medium cursor-pointer hover:bg-gray-50 transition-all">
+                    SAT
+                </label>
+            </div>
+        
+    
+</div>
+                    </div>
+                
+
+                <ul id="errors_id_consumption_weekdays" hidden="" class="list-disc">
+                    
+                </ul>
+                
+        
+    
+
+    
+        
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    
+                        <label for="id_days_gap" class="block text-sm font-bold text-gray-700 ml-1"><span class="text-red-500 font-bold">*</span>Days gap</label>
+                    
+                    <input type="text" name="days_gap" value="1" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:border-green-500 outline-none transition-all" required="" id="id_days_gap">
+                    
+                
+                    <ul id="errors_" hidden="" class="list-disc">
+                        
+                    </ul>
+                </div>
+            </div>
+        
+    
+
+    
+        
+            <div class="grid grid-cols-1 gap-6">
+                <div class="space-y-2">
+                    
+                        <label for="id_special_instructions" class="block text-sm  text-gray-700 ml-1">Special instructions</label>
+                    
+                    <textarea name="special_instructions" cols="40" rows="10" class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-2xl focus:bg-white focus:border-green-500 outline-none transition-all resize-none" placeholder="e.g. Dissolve in water first" maxlength="2000" id="id_special_instructions"></textarea>
+                    
+                
+                    <ul id="errors_" hidden="" class="list-disc">
+                        
+                    </ul>
+                </div>
+            </div>
+        
+    
+
+    
+
+    
+
+
+
+                <!-- Discontinued & Actions -->
+                <div class="flex flex-col space-y-6 pt-4">
+                    <div class="flex items-center space-x-3 bg-blue-50 p-4 rounded-2xl border border-blue-100">
+                        <input type="checkbox" name="optional" id="id_optional" class="w-5 h-5 rounded border-blue-300 text-blue-600 focus:ring-blue-500">
+                        <label for="id_optional" class="text-sm font-bold text-blue-700 cursor-pointer">Optional</label>
+                    </div>
+
+                    <div class="flex items-center space-x-3 bg-red-50 p-4 rounded-2xl border border-red-100">
+                        <input type="checkbox" name="discontinued" id="id_discontinued" class="w-5 h-5 rounded border-red-300 text-red-600 focus:ring-red-500">
+                        <label for="id_discontinued" class="text-sm font-bold text-red-700 cursor-pointer">Mark as Discontinued</label>
+                    </div>
+
+                    <button type="submit" class="w-full py-4 bg-success-custom text-white rounded-2xl font-bold shadow-lg shadow-green-900/20 hover:opacity-90 transform active:scale-[0.98] transition-all flex items-center justify-center">
+                        <i class="fa-solid fa-plus-circle mr-2 text-lg"></i>
+                        Add Medicine Schedule
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <hr class="border-gray-200 mb-10">
+
+        <!-- Table Section -->
+        <div class="space-y-6">
+            <div class="flex flex-col md:flex-row md:items-end justify-between gap-4">
+                <div>
+                    <h3 class="text-2xl font-bold text-gray-800">Consumption Schedule</h3>
+                    <p class="text-gray-500 text-sm mt-1">Manage and track recurring medicine schedules</p>
+                </div>
+                <div class="flex gap-2">
+                    <a href="/medicine/medicine-schedule?view=day&amp;patient_id=1" target="_blank" class="px-5 py-2.5 bg-blue-50 text-blue-600 border border-blue-100 rounded-xl font-bold text-sm hover:bg-blue-600 hover:text-white transition-all flex items-center">
+                        <i class="fa-solid fa-external-link mr-2"></i> View Daily View
+                    </a>
+                    <button id="delete-button" disabled="" onclick="deleteSelected()" class="px-5 py-2.5 bg-red-50 text-red-600 border border-red-100 rounded-xl font-bold text-sm hover:bg-red-600 hover:text-white disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center">
+                        <i class="fa-solid fa-trash-can mr-2"></i> Delete
+                    </button>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl card-shadow border border-gray-100 overflow-hidden">
+                <div class="custom-scrollbar overflow-x-auto">
+                    <table id="medicine-schedule-table" class="w-full text-sm text-center">
+                        <thead>
+                            <tr class="bg-gray-50 border-b border-gray-100 text-gray-600 uppercase text-xs font-bold tracking-wider">
+                                <th class="px-4 py-4"><input id="selectAllBox" type="checkbox" class="rounded border-gray-300 text-green-600 focus:ring-green-500"></th>
+                                <th class="px-4 py-4">Name</th>
+                                <th class="px-4 py-4">Dose</th>
+                                <th class="px-4 py-4">Timing</th>
+                                <th class="px-4 py-4">Rule</th>
+                                <th class="px-4 py-4">Optional</th>
+                                <th class="px-4 py-4">Weekdays</th>
+                                <th class="px-4 py-4">Gap</th>
+                                <th class="px-4 py-4">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="schedule-tbody" class="divide-y divide-gray-50 text-gray-700 font-medium">
+                            
+                                
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-4"><input type="checkbox" class="row-check rounded border-gray-300 text-green-600 focus:ring-green-500"></td>
+                                        <td class="px-4 py-4 font-bold text-gray-900">D-Balance</td>
+                                        <td class="px-4 py-4">1 </td>
+                                        <td class="px-4 py-4 text-xs">Morning</td>
+                                        <td class="px-4 py-4"><span class="px-2 py-1 bg-gray-100 rounded-md">After Meal</span></td>
+                                        <td class="px-4 py-4">
+                                            
+                                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">
+                                                    Mandatory
+                                                </span>
+                                            
+                                        </td>
+                                        <td class="px-4 py-4">SUN, MON, TUE, WED, THU, FRI, SAT</td>
+                                        <td class="px-4 py-4">1</td>
+                                        <td class="px-4 py-4">
+                                            
+                                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
+                                                    Active
+                                                </span>
+                                            
+                                        </td>
+                                    </tr>
+                                
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-4"><input type="checkbox" class="row-check rounded border-gray-300 text-green-600 focus:ring-green-500"></td>
+                                        <td class="px-4 py-4 font-bold text-gray-900">Perkinil</td>
+                                        <td class="px-4 py-4">1 </td>
+                                        <td class="px-4 py-4 text-xs">Morning, Night</td>
+                                        <td class="px-4 py-4"><span class="px-2 py-1 bg-gray-100 rounded-md">After Meal</span></td>
+                                        <td class="px-4 py-4">
+                                            
+                                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">
+                                                    Mandatory
+                                                </span>
+                                            
+                                        </td>
+                                        <td class="px-4 py-4">SUN, MON, TUE, WED, THU, FRI, SAT</td>
+                                        <td class="px-4 py-4">1</td>
+                                        <td class="px-4 py-4">
+                                            
+                                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
+                                                    Active
+                                                </span>
+                                            
+                                        </td>
+                                    </tr>
+                                
+                                    <tr class="hover:bg-gray-50 transition-colors">
+                                        <td class="px-4 py-4"><input type="checkbox" class="row-check rounded border-gray-300 text-green-600 focus:ring-green-500"></td>
+                                        <td class="px-4 py-4 font-bold text-gray-900">Test Test</td>
+                                        <td class="px-4 py-4">1 </td>
+                                        <td class="px-4 py-4 text-xs">Morning, Evening</td>
+                                        <td class="px-4 py-4"><span class="px-2 py-1 bg-gray-100 rounded-md">Before Meal</span></td>
+                                        <td class="px-4 py-4">
+                                            
+                                                <span class="px-3 py-1 bg-red-100 text-red-700 rounded-full text-xs font-bold">
+                                                    Mandatory
+                                                </span>
+                                            
+                                        </td>
+                                        <td class="px-4 py-4">SUN, MON, TUE, WED, THU, FRI, SAT</td>
+                                        <td class="px-4 py-4">1</td>
+                                        <td class="px-4 py-4">
+                                            
+                                                <span class="px-3 py-1 bg-green-100 text-green-700 rounded-full text-xs font-bold">
+                                                    Active
+                                                </span>
+                                            
+                                        </td>
+                                    </tr>
+                                
+                            
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="bg-gray-50 p-4 border-t border-gray-100 flex justify-center">
+                    <div class="inline-flex rounded-xl shadow-sm">
+                        <a href="?patient_id=1&amp;page=1#medicine-schedule-table" class="px-4 py-2 text-sm font-bold text-success-custom bg-white border border-gray-200 rounded-l-xl hover:bg-gray-50 transition-colors">First</a>
+                        <a href="?patient_id=1&amp;page=1#medicine-schedule-table" class="px-4 py-2 text-sm font-bold text-white bg-success-custom border-t border-b border-success-custom">1</a>
+                        <a href="?patient_id=1&amp;page=1#medicine-schedule-table" class="px-4 py-2 text-sm font-bold text-success-custom bg-white border border-gray-200 rounded-r-xl hover:bg-gray-50 transition-colors">Last</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal (Modernized) -->
+    <div class="hidden fixed inset-0 z-[100] overflow-y-auto" id="myModal" aria-labelledby="myModalLabel" role="dialog" aria-modal="true">
+        <div class="flex items-center justify-center min-h-screen px-4">
+            <div class="fixed inset-0 bg-gray-900 bg-opacity-50 transition-opacity" onclick="toggleModal(false)"></div>
+            <div class="inline-block bg-white rounded-3xl text-left overflow-hidden shadow-2xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+                <div class="bg-white p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-xl font-bold text-gray-900" id="myModalLabel">Details</h3>
+                        <button type="button" class="text-gray-400 hover:text-gray-500" onclick="toggleModal(false)">
+                            <i class="fa-solid fa-xmark text-xl"></i>
+                        </button>
+                    </div>
+                    <div id="modal-body" class="text-gray-600"></div>
+                </div>
+                <div class="bg-gray-50 px-6 py-4 flex flex-row-reverse" id="modal-footer">
+                    <button type="button" class="px-6 py-2 bg-success-custom text-white font-bold rounded-xl hover:opacity-90" onclick="toggleModal(false)">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript" src="{% static "medicinemanager/attendant_add_medicine_schedule.js" %}"></script>
+{% endblock %}

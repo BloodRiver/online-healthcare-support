@@ -1,0 +1,134 @@
+{% extends 'medicinemanager/base.html' %}
+
+{% block title %}Add Patient{% endblock %}
+
+
+
+{% block body %}
+    <!-- Main Content -->
+    <main class="flex-grow py-12 px-4">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden">
+                <!-- Search Header -->
+                <div class="p-8 border-b border-gray-100">
+                    <h2 class="text-3xl font-extrabold text-gray-900 mb-2">Add New Patient</h2>
+                    <p class="text-gray-500 italic text-sm">Search for a patient to manage their medication schedules and health logs.</p>
+                    
+                    <div class="mt-8">
+                        <div class="relative group">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fa-solid fa-magnifying-glass text-gray-400 group-focus-within:text-green-600 transition-colors"></i>
+                            </div>
+                            <input type="text" id="searchInput" 
+                                placeholder="Search by name, email, or phone number..." 
+                                class="block w-full pl-12 pr-4 py-4 border border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-transparent outline-none transition-all shadow-sm text-lg">
+                            <button onclick="handleSearch()" class="absolute right-2 top-2 bottom-2 bg-success-custom text-white px-6 rounded-lg font-bold hover:bg-green-800 transition-all">
+                                Search
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Results Section -->
+                <div id="resultsContainer" class="hidden p-8 bg-gray-50">
+                    <h3 class="text-sm font-bold text-gray-400 uppercase tracking-wider mb-6">Search Results</h3>
+                    <div id="resultsList" class="space-y-4">
+                        <!-- Mock Result 1 -->
+                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between hover:border-green-300 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">JD</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">John Doe</h4>
+                                    <p class="text-xs text-gray-500">john.doe@email.com • +1 (555) 012-3456</p>
+                                </div>
+                            </div>
+                            <button onclick="openConfirmModal('John Doe')" class="btn-success-custom text-white px-4 py-2 rounded-lg text-sm font-bold transition-all transform hover:scale-105">
+                                <i class="fa-solid fa-paper-plane mr-2"></i>Send Request
+                            </button>
+                        </div>
+
+                        <!-- Mock Result 2 -->
+                        <div class="bg-white p-5 rounded-xl border border-gray-200 shadow-sm flex items-center justify-between hover:border-green-300 transition-colors">
+                            <div class="flex items-center gap-4">
+                                <div class="w-12 h-12 rounded-full bg-green-100 flex items-center justify-center text-green-700 font-bold">JS</div>
+                                <div>
+                                    <h4 class="font-bold text-gray-900">Jane Smith</h4>
+                                    <p class="text-xs text-gray-500">jane.smith@provider.net • +1 (555) 987-6543</p>
+                                </div>
+                            </div>
+                            <button onclick="openConfirmModal('Jane Smith')" class="btn-success-custom text-white px-4 py-2 rounded-lg text-sm font-bold transition-all transform hover:scale-105">
+                                <i class="fa-solid fa-paper-plane mr-2"></i>Send Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-pills text-white text-2xl"></i>
+                    <span class="text-xl font-bold text-white tracking-tight">Personal Medicine Manager</span>
+                </div>
+                <p class="text-sm">&copy; 2026 Personal Medicine Manager. For reminder purposes only.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-xs">
+                <p>Disclaimer: This platform does not sell drugs. Always consult with a medical professional for clinical decisions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmModal" class="hidden fixed inset-0 z-[60] flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="bg-white rounded-2xl shadow-2xl relative z-10 max-w-md w-full p-8 transform transition-all">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                    <i class="fa-solid fa-user-check"></i>
+                </div>
+                <h3 class="text-xl font-bold text-gray-900 mb-2">Confirm Add Patient</h3>
+                <p class="text-gray-600 mb-8">Are you sure you wish to add <span id="targetPatientName" class="font-bold text-green-700"></span> as your patient?</p>
+                <div class="flex gap-4">
+                    <button onclick="closeModal('confirmModal')" class="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-all">
+                        Cancel
+                    </button>
+                    <button onclick="confirmRequest()" class="flex-1 px-4 py-3 btn-success-custom text-white rounded-xl font-bold transition-all shadow-md">
+                        Yes, Add Patient
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Final Success Modal -->
+    <div id="successModal" class="hidden fixed inset-0 z-[70] flex items-center justify-center p-4">
+        <div class="modal-overlay absolute inset-0"></div>
+        <div class="bg-white rounded-2xl shadow-2xl relative z-10 max-w-md w-full p-8 text-center animate-in zoom-in duration-300">
+            <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4 text-2xl">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <h3 class="text-xl font-bold text-gray-900 mb-2">Request Sent</h3>
+            <p class="text-gray-600 mb-8">Your request has been successfully delivered. Please wait while the patient accepts your invitation.</p>
+            <button onclick="closeModal('successModal')" class="w-full px-4 py-3 bg-slate-800 text-white rounded-xl font-bold hover:bg-slate-700 transition-all">
+                Got it
+            </button>
+        </div>
+    </div>
+{% endblock %}
+
+{% load static %}
+
+{% block script %}
+    <script type="text/javascript" src="{% static 'medicinemanager/js/add_patient.js' %}">
+    </script>
+{% endblock %}

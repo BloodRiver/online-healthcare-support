@@ -1,0 +1,172 @@
+{% extends "medicinemanager/base.html" %}
+
+{% block title %}Medicine Schedule{% endblock %}
+
+{% load static %}
+{% block css %}
+    <link href="{% static 'medicinemanager/css/medicine_schedule.css' %}"
+     rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block body %}
+            
+                        
+    <div class="flex-grow flex flex-col items-center py-6 px-4">
+        
+        <!-- View Switcher -->
+    
+
+        <div id="mainContent" class="w-full max-w-md">
+            <!-- Daily Summary Banner -->
+            <div class="mb-6 px-2">
+                <div class="flex flex-col items-center justify-center px-4 py-y">
+                    <button id="seeTodayButton" class="border border-green-500 rounded-2xl bg-white text-green-700 hover:bg-green-700 hover:text-white font-bold transition-all px-4 py-2">See Today's Schedule</button>
+                    <div class="flex gap-3 items-center justify-between py-6 px-4">
+                        <button id="dateNavigationPrevious" class="border border-green-500 rounded-2xl bg-white hover:text-white hover:bg-green-700 py-6 px-4 h-full transition-all" type="button"><i class="fa-solid fa-arrow-left"></i>
+                        </button>
+                        <div class="text-center mb-3">
+                            <h3 id="scheduleHeader" class="text-2xl font-black text-gray-800">Today's Schedule</h3>
+                            <p class="text-sm font-medium text-gray-500" id="currentDateDisplay">Tuesday, Apr 21</p>
+                        </div>
+                        <button id="dateNavigationNext" class="border border-green-500 rounded-2xl bg-white hover:text-white hover:bg-green-700 py-6 px-4 h-full transition-all" type="button"><i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                    </div>
+                <div class="text-right">
+                    <span id="remainingCounterDisplay" class="bg-green-100 text-green-700 px-3 py-1 rounded-full text-xs font-bold uppercase">5 REMAINING</span>
+                </div>
+            </div>
+
+            <!-- Timeline Container -->
+            <div class="space-y-0 relative">
+                
+                <!-- Time Block: Morning -->
+                <div id="timeLineMorningBlock" class="timeline-item relative pb-8">
+                    <div class="timeline-line"></div>
+                    <div class="flex gap-4">
+                        <div class="relative z-10 w-12 h-12 rounded-full bg-orange-100 text-orange-600 flex items-center justify-center flex-shrink-0 shadow-sm border-4 border-f3f4f6">
+                            <i class="fa-solid fa-sun text-lg"></i>
+                        </div>
+                        <div class="flex-grow pt-1">
+                            <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Morning <span class="ml-2 font-medium text-gray-300">08:00 AM</span></h4>
+                            <div id="timeLineMorningBlockBody">
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-3 hover:border-green-300 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-gray-800">D-Balance</h5>
+                            <span class="text-[10px] bg-orange-50 text-orange-600 px-2 py-0.5 rounded font-bold">AFTER MEAL</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <i class="fa-solid fa-pills mr-2 text-gray-300"></i>
+                            <span>1 Capsule</span>
+                        </div>
+                        <button class="w-full py-2 bg-gray-50 text-gray-600 rounded-lg text-xs font-bold hover:bg-green-500 hover:text-white transition-all">MARK AS TAKEN</button>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-3 hover:border-green-300 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-gray-800">Perkinil</h5>
+                            <span class="text-[10px] bg-orange-50 text-orange-600 px-2 py-0.5 rounded font-bold">AFTER MEAL</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <i class="fa-solid fa-pills mr-2 text-gray-300"></i>
+                            <span>1 Tablet</span>
+                        </div>
+                        <button class="w-full py-2 bg-gray-50 text-gray-600 rounded-lg text-xs font-bold hover:bg-green-500 hover:text-white transition-all">MARK AS TAKEN</button>
+                    </div>
+                    
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-3 hover:border-green-300 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-gray-800">Test Test</h5>
+                            <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold">BEFORE MEAL</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <i class="fa-solid fa-pills mr-2 text-gray-300"></i>
+                            <span>1 Ointment</span>
+                        </div>
+                        <button class="w-full py-2 bg-gray-50 text-gray-600 rounded-lg text-xs font-bold hover:bg-green-500 hover:text-white transition-all">MARK AS TAKEN</button>
+                    </div>
+                    </div>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Block: Afternoon -->
+                <div id="timeLineAfternoonBlock" class="timeline-item relative pb-8" hidden="">
+                    <div class="timeline-line"></div>
+                    <div class="flex gap-4">
+                        <div class="relative z-10 w-12 h-12 rounded-full bg-yellow-100 text-yellow-600 flex items-center justify-center flex-shrink-0 shadow-sm border-4 border-f3f4f6">
+                            <i class="fa-solid fa-cloud-sun text-lg"></i>
+                        </div>
+                        <div class="flex-grow pt-1">
+                            <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Afternoon <span class="ml-2 font-medium text-gray-300">02:00 PM</span></h4>
+                            
+                            <div id="timeLineAfternoonBlockBody"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Block: Evening -->
+                <div id="timeLineEveningBlock" class="timeline-item relative pb-8">
+                    <div class="timeline-line"></div>
+                    <div class="flex gap-4">
+                        <div class="relative z-10 w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0 shadow-sm border-4 border-f3f4f6">
+                            <i class="fa-solid fa-moon text-lg"></i>
+                        </div>
+                        <div class="flex-grow pt-1">
+                            <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Evening <span class="ml-2 font-medium text-gray-300">06:30 PM</span></h4>
+                            
+                            <div id="timeLineEveningBlockBody">
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-3 hover:border-green-300 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-gray-800">Test Test</h5>
+                            <span class="text-[10px] bg-blue-50 text-blue-600 px-2 py-0.5 rounded font-bold">BEFORE MEAL</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <i class="fa-solid fa-pills mr-2 text-gray-300"></i>
+                            <span>1 Ointment</span>
+                        </div>
+                        <button class="w-full py-2 bg-orange-400 text-white rounded-lg text-xs font-bold shadow-md shadow-orange-100">TAKE NOW</button>
+                    </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Time Block: Night -->
+                <div id="timeLineNightBlock" class="timeline-item relative pb-8">
+                    <div class="timeline-line"></div>
+                    <div class="flex gap-4">
+                        <div class="relative z-10 w-12 h-12 rounded-full bg-indigo-100 text-indigo-900 flex items-center justify-center flex-shrink-0 shadow-sm border-4 border-f3f4f6">
+                            <i class="fa-solid fa-bed text-lg"></i>
+                        </div>
+                        <div class="flex-grow pt-1">
+                            <h4 class="text-xs font-black text-gray-400 uppercase tracking-widest mb-3">Night <span class="ml-2 font-medium text-gray-300">10:00 PM</span></h4>
+                            
+                            <div id="timeLineNightBlockBody">
+                    <div class="bg-white rounded-2xl p-4 shadow-sm border border-gray-100 mb-3 hover:border-green-300 transition-colors">
+                        <div class="flex justify-between items-start mb-2">
+                            <h5 class="font-bold text-gray-800">Perkinil</h5>
+                            <span class="text-[10px] bg-orange-50 text-orange-600 px-2 py-0.5 rounded font-bold">AFTER MEAL</span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500 mb-3">
+                            <i class="fa-solid fa-pills mr-2 text-gray-300"></i>
+                            <span>1 Tablet</span>
+                        </div>
+                        <button class="w-full py-2 bg-gray-50 text-gray-600 rounded-lg text-xs font-bold hover:bg-green-500 hover:text-white transition-all">MARK AS TAKEN</button>
+                    </div>
+                    </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+{% endblock %}
+
+{% block script %}
+    <script type="text/javascript"
+     src="{% static 'medicinemanager/js/medicine_schedule.js' %}"></script>
+{% endblock %}

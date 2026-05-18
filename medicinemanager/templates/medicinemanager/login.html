@@ -1,0 +1,65 @@
+{% extends 'medicinemanager/base.html' %}
+
+{% block title %}Login{% endblock %}
+
+{% load static %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'medicinemanager/login.css' %}">
+{% endblock %}
+
+{% block body %}
+    
+    <div class="max-w-md w-full bg-white p-8 rounded-xl shadow-lg mx-auto my-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-extrabold text-gray-900">Login</h2>
+            <p class="text-sm text-gray-500 mt-2 italic">* marked fields are required</p>
+        </div>
+
+        <form method="POST" class="space-y-6" name="loginForm">
+            {% csrf_token %}
+            {% for each_field in form %}
+
+                <div>
+                    <label for="{{ each_field.id_for_label }}" class="block text-sm {% if each_field.field.required %}font-semibold{% endif %} text-gray-700">
+                        {% if each_field.field.required %}<span class="text-red-500">*</span> {% endif %}{{ each_field.label }}
+                    </label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        {% if each_field.field.icon_template %}
+                            {{ each_field.field.icon_template|safe }}
+                        {% endif %}
+
+                        {{ each_field }}
+                        
+                        {% if each_field.errors %}
+                            <ul class="list-disc">
+                                {% for each_error in each_field.errors %}
+                                    <li class="text-red-500">{{ each_error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+
+                    </div>
+                </div>
+
+            {% endfor %}
+
+            
+
+            <div>
+                <a href="{% url 'medicinemanager:dashboard' %}" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-bold text-white btn-success-custom focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition-all transform hover:scale-[1.02]">
+                    Log In
+                </a>
+            </div>
+        </form>
+
+        <div class="mt-8 text-center">
+            <p class="text-sm text-gray-600">
+                Don't have an account? 
+                <a href="{% url 'medicinemanager:register' %}" class="font-bold text-green-700 hover:text-green-600 hover:underline transition-all">
+                    Click here to create one.
+                </a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

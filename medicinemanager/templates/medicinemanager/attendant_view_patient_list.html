@@ -1,0 +1,69 @@
+{% extends 'medicinemanager/base.html' %}
+
+{% load static %}
+
+{% block title %}Select Patient{% endblock %}
+
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'medicinemanager/dashboard.css' %}">
+{% endblock %}
+
+{% block body %}
+    <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 w-full space-y-12"></div>
+        <h1 class="text-2xl font-bold text-gray-800 mb-6 flex items-center justify-center">
+            <i class="fa-solid fa-user mr-2 text-green-500"></i> Select Patient
+        </h1>
+        <div class="flex flex-wrap justify-center items-center gap-2 md:gap-4 w-full mx-auto">
+
+            <div class="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1rem)] xl:w-[calc(20%-1rem)] my-3 p-4 rounded flex justify-center">
+                <div class="flex-none w-64 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-64 overflow-hidden">
+                    <div class="p-3 border-b border-gray-100 bg-gray-50/80 shrink-0 flex flex-col items-center">
+                        <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                            {% if logged_in_account.picture %}
+                                <img class="w-full h-full object-cover" src="{{ logged_in_account.picture.url }}">
+                            {% else %}
+                                <i class="fa-solid fa-user-tie text-indigo-500 text-lg"></i>
+                            {% endif %}
+                        </div>
+                        <h3 class="font-bold text-gray-800 text-sm">{{ logged_in_account.user.first_name }}&nbsp;{{ logged_in_account.user.last_name }}</h3>
+                    </div>
+                    <div class="p-3 space-y-2 flex-grow bg-white"></div>
+                    <div class="p-4 border-t border-gray-50 bg-gray-50/50 rounded-b-xl">
+                        {% comment %} <a href="{% if "?next=medicine-schedule" in request.get_full_path %}{% url 'medicinemanager:medicine_schedule' %}{% elif "?next=add-medicine-schedule" %}{% url 'medicinemanager:attendant_add_medicine_schedule' %}{% endif %}?patient_id={{ logged_in_account.id }}"> {% endcomment %}
+                        <a href="{% url 'medicinemanager:index' %}{{ request.GET.next }}?patient_id={{ logged_in_account.id }}" class="w-full bg-success-custom text-white py-3 px-5 rounded-xl font-bold text-sm shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center">
+                            <i class="fa-solid fa-clipboard mr-2"></i> View
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            {% for each_patient in patient_list %}
+                <div class="w-full sm:w-[calc(50%-1rem)] lg:w-[calc(25%-1rem)] xl:w-[calc(20%-1rem)] my-3 p-4 rounded flex justify-center">
+                    <div class="flex-none w-64 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-64 overflow-hidden">
+                        <div class="p-3 border-b border-gray-100 bg-gray-50/80 shrink-0 flex flex-col items-center">
+                            <div class="w-20 h-20 rounded-full bg-indigo-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                                {% if each_patient.patient.picture %}
+                                    <img class="w-full h-full object-cover" src="{{ each_patient.patient.picture.url }}">
+                                {% else %}
+                                    <i class="fa-solid fa-user-tie text-indigo-500 text-lg"></i>
+                                {% endif %}
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm">{{ each_patient.patient.user.first_name }}&nbsp;{{ each_patient.patient.user.last_name }}</h3>
+                        </div>
+                        <div class="p-3 space-y-2 flex-grow bg-white">
+                            <div class="p-2 rounded-lg text-xs flex justify-between items-center">
+                                <span class="text-gray-700 font-bold">Relationship with patient:</span>
+                                <span class="text-gray-700">{{ each_patient.relationship }}</span>
+                            </div>
+                        </div>
+                        <div class="p-4 border-t border-gray-50 bg-gray-50/50 rounded-b-xl">
+                            <a href="{% url 'medicinemanager:index' %}{{ request.GET.next }}?patient_id={{ each_patient.patient.id }}" class="w-full bg-success-custom text-white py-3 px-5 rounded-xl font-bold text-sm shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center">
+                                <i class="fa-solid fa-clipboard mr-2"></i> View
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

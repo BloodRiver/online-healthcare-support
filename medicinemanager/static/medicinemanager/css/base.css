@@ -1,0 +1,44 @@
+:root
+{
+    --success-custom: #198754;
+}
+
+body
+{
+    font-family: 'Inter', sans-serif;
+    background-color: #f9fafb;
+}
+/* Custom Success Green to match original Bootstrap bg-success (#198754) */
+.bg-success-custom
+{
+    background-color: #198754;
+}
+.text-success-custom
+{
+    color: #198754;
+}
+.bg-danger-custom
+{
+    background-color: #ef4444;
+}
+.btn-success-custom
+{
+    background-color: #198754;
+}
+.btn-danger-custom
+{
+    background-color: #ef4444;
+}
+.btn-danger-custom:hover
+{
+    background-color: #c92f2f;
+}
+.btn-success-custom:hover
+{
+    background-color: #10653d;
+}
+
+/* Custom scrollbar for the dropdown */
+.dropdown-scroll::-webkit-scrollbar { width: 5px; }
+.dropdown-scroll::-webkit-scrollbar-track { background: #f1f1f1; }
+.dropdown-scroll::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }

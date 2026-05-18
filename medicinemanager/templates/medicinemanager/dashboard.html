@@ -1,0 +1,287 @@
+{% extends 'medicinemanager/base.html' %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% load static %}
+{% block css %}
+    <link type="text/css" rel="stylesheet" href="{% static 'medicinemanager/css/dashboard.css' %}">
+{% endblock %}
+
+{% block body %}
+    <!-- Confirmation Modal -->
+    <div id="confirm-modal" class="fixed inset-0 z-[100] hidden flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+        <div class="bg-white rounded-2xl shadow-2xl max-w-sm w-full p-6 transform transition-all scale-95 opacity-0 duration-200" id="modal-content">
+            <div class="text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="fa-solid fa-check-double text-green-600 text-2xl"></i>
+                </div>
+                <h3 class="text-lg font-bold text-gray-900 mb-2">Mark as Completed?</h3>
+                <p class="text-gray-500 text-sm mb-6">Are you sure you wish to mark these medicines as <span class="font-bold text-green-700">taken and completed</span> for today?</p>
+                <div class="flex space-x-3">
+                    <button id="modal-cancel" class="flex-1 py-2.5 px-4 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-colors">Cancel</button>
+                    <button id="modal-confirm" class="flex-1 py-2.5 px-4 bg-success-custom text-white rounded-xl font-semibold hover:opacity-90 transition-opacity">Yes, Taken</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="max-w-7xl mx-auto px-4 py-8 sm:px-6 w-full space-y-12">
+        
+        <!-- SECTION: Medicine Restock Reminders -->
+        <section>
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fa-solid fa-boxes-stacked mr-2 text-orange-500"></i> Medicine Restock Reminders
+            </h2>
+            <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 bg-orange-50/30">
+                <div class="flex lg:justify-center overflow-x-auto space-x-6 pb-2 custom-scrollbar">
+                    
+                    <!-- MY MEDICINE RESTOCK CARD -->
+                    <div class="flex-none w-64 bg-white rounded-xl shadow-sm border border-orange-200 flex flex-col h-64 overflow-hidden">
+                        <div class="p-3 border-b border-orange-100 bg-orange-50 shrink-0 flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                                <i class="fa-solid fa-user text-orange-600 text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm">My Stock</h3>
+                        </div>
+                        <div class="p-3 overflow-y-auto custom-scrollbar space-y-2 flex-grow bg-white">
+                            <div class="p-2 bg-gray-50 rounded-lg text-xs flex justify-between items-center border border-gray-100">
+                                <span class="text-gray-700">Amoxicillin</span>
+                                <span class="font-bold text-red-600">4 Caps</span>
+                            </div>
+                            <div class="p-2 bg-gray-50 rounded-lg text-xs flex justify-between items-center border border-gray-100">
+                                <span class="text-gray-700">Vitamin D3</span>
+                                <span class="font-bold text-orange-600">12 Tabs</span>
+                            </div>
+                            <div class="p-2 bg-gray-50 rounded-lg text-xs flex justify-between items-center border border-gray-100">
+                                <span class="text-gray-700">Eye Drops</span>
+                                <span class="font-bold text-red-600">0.5 Bottle</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PATIENT 1 RESTOCK -->
+                    <div class="flex-none w-64 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-64 overflow-hidden">
+                        <div class="p-3 border-b border-gray-100 bg-gray-50/80 shrink-0 flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                                <i class="fa-solid fa-user-tie text-indigo-500 text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm">John Doe</h3>
+                        </div>
+                        <div class="p-3 overflow-y-auto custom-scrollbar space-y-2 flex-grow bg-white">
+                            <div class="p-2 bg-indigo-50/50 rounded-lg text-xs flex justify-between items-center">
+                                <span class="text-gray-700">Metformin</span>
+                                <span class="font-bold text-red-600">2 Tabs</span>
+                            </div>
+                            <div class="p-2 bg-indigo-50/50 rounded-lg text-xs flex justify-between items-center">
+                                <span class="text-gray-700">Lisinopril</span>
+                                <span class="font-bold text-indigo-600">20 Tabs</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- PATIENT 2 RESTOCK -->
+                    <div class="flex-none w-64 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-64 overflow-hidden">
+                        <div class="p-3 border-b border-gray-100 bg-gray-50/80 shrink-0 flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                                <i class="fa-solid fa-user-nurse text-pink-500 text-lg"></i>
+                            </div>
+                            <h3 class="font-bold text-gray-800 text-sm">Jane Smith</h3>
+                        </div>
+                        <div class="p-3 overflow-y-auto custom-scrollbar space-y-2 flex-grow bg-white">
+                            <div class="p-2 bg-pink-50/50 rounded-lg text-xs flex justify-between items-center">
+                                <span class="text-gray-700">Insulin</span>
+                                <span class="font-bold text-red-600">5 Units</span>
+                            </div>
+                            <div class="p-2 bg-pink-50/50 rounded-lg text-xs flex justify-between items-center">
+                                <span class="text-gray-700">Ibuprofen</span>
+                                <span class="font-bold text-pink-600">45 Caps</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            
+                <!-- My Medicine Reminders -->
+                <section class="lg:col-span-1" id="section-my-reminders">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-bell mr-2 text-red-500"></i> My Reminders
+                    </h2>
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-100 flex flex-col h-[400px]">
+                        <div id="myMedicineListContainer" class="p-6 overflow-y-auto custom-scrollbar space-y-3 flex-grow reminder-container"><label class="reminder-item flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
+                            <div class="flex items-center">
+                                <div class="checkbox-wrapper mr-3 flex items-center justify-center w-5">
+                                    <input value="2" type="checkbox" class="rounded-checkbox reminder-checkbox">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-medium text-gray-700">D-Balance</span>
+                                    <!--// <span class="text-[10px] text-gray-400">Next dose: 2:00 PM</span>-->
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">1 Capsule</span>
+                            </label><label class="reminder-item flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
+                            <div class="flex items-center">
+                                <div class="checkbox-wrapper mr-3 flex items-center justify-center w-5">
+                                    <input value="3" type="checkbox" class="rounded-checkbox reminder-checkbox">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-medium text-gray-700">Perkinil</span>
+                                    <!--// <span class="text-[10px] text-gray-400">Next dose: 2:00 PM</span>-->
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">1 Tablet</span>
+                            </label><label class="reminder-item flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 cursor-pointer hover:bg-gray-100 transition-colors">
+                            <div class="flex items-center">
+                                <div class="checkbox-wrapper mr-3 flex items-center justify-center w-5">
+                                    <input value="1" type="checkbox" class="rounded-checkbox reminder-checkbox">
+                                </div>
+                                <div class="flex flex-col">
+                                    <span class="font-medium text-gray-700">Test Test</span>
+                                    <!--// <span class="text-[10px] text-gray-400">Next dose: 2:00 PM</span>-->
+                                </div>
+                            </div>
+                            <span class="text-xs font-bold bg-green-100 text-green-700 px-2 py-1 rounded">1 Ointment</span>
+                            </label></div>
+                
+                            <!-- Sticky Update Button -->
+                            <div class="p-4 border-t border-gray-50 bg-gray-50/50 rounded-b-xl">
+                                <button id="btn-update-my" class="w-full bg-success-custom text-white py-3 rounded-xl font-bold text-sm shadow-sm hover:opacity-90 transition-opacity flex items-center justify-center" disabled="">
+                                    <i class="fa-solid fa-circle-check mr-2"></i> Mark as Taken
+                                </button>
+                            </div>
+                        </div></section>
+            
+
+            
+                <!-- Patients' Medicine Reminders -->
+                <section class="lg:col-span-2">
+                    <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                        <i class="fa-solid fa-hospital-user mr-2 text-indigo-500"></i> Patients' Reminders
+                    </h2>
+                    <div class="border-2 border-dashed border-gray-300 rounded-2xl p-6 bg-gray-50/50 h-[400px] flex items-center">
+                        <div id="patientReminderCardsContainer" class="flex overflow-x-auto space-x-6 pb-2 custom-scrollbar w-full h-full py-2">
+
+
+                        
+                            <div id="patient-NafisaBinteSeraj-card" class="flex-none w-72 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden patient-card">
+                            <div class="p-3 border-b border-gray-100 bg-gray-50/80 shrink-0 flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-pink-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                                <i class="fa-solid fa-user-tie text-pink-500 text-lg"></i>
+                                </div>
+                                <h3 class="font-bold text-gray-800 text-sm">NafisaBinteSeraj</h3>
+                            </div>
+                            <div id="patient-NafisaBinteSeraj-medicine-list" class="p-3 overflow-y-auto custom-scrollbar space-y-2 flex-grow bg-white reminder-container">
+                            
+                                    <label class="reminder-item flex items-center justify-between p-2 bg-pink-50/50 rounded-lg text-xs cursor-pointer hover:bg-pink-100/50 transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="checkbox-wrapper mr-2 flex items-center justify-center w-5">
+                                                <input value="4" type="checkbox" class="rounded-checkbox reminder-checkbox">
+                                            </div>
+                                            <span class="text-gray-700">Perkinil</span>
+                                        </div>
+                                        <span class="font-bold text-red-600">1 Tablet</span>
+                                    </label>
+                                
+                                    <label class="reminder-item flex items-center justify-between p-2 bg-pink-50/50 rounded-lg text-xs cursor-pointer hover:bg-pink-100/50 transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="checkbox-wrapper mr-2 flex items-center justify-center w-5">
+                                                <input value="6" type="checkbox" class="rounded-checkbox reminder-checkbox">
+                                            </div>
+                                            <span class="text-gray-700">Empa 10</span>
+                                        </div>
+                                        <span class="font-bold text-red-600">1 Tablet</span>
+                                    </label>
+                                </div>
+                        
+                                <div class="p-3 border-t border-gray-50 bg-gray-50/50">
+                                    <button id="patient-NafisaBinteSeraj-button" class="patient-update-btn w-full bg-pink-600 text-white py-2 rounded-lg font-bold text-xs shadow-sm hover:bg-pink-700 transition-colors flex items-center justify-center" disabled="">
+                                        <i class="fa-solid fa-circle-check mr-2"></i> Mark as Taken
+                                    </button>
+                                </div>
+                            
+                            </div>
+                            <div id="patient-MonzurulAlam-card" class="flex-none w-72 bg-white rounded-xl shadow-sm border border-gray-200 flex flex-col h-full overflow-hidden patient-card">
+                            <div class="p-3 border-b border-gray-100 bg-gray-50/80 shrink-0 flex flex-col items-center">
+                            <div class="w-10 h-10 rounded-full bg-indigo-100 flex items-center justify-center mb-1 overflow-hidden border-2 border-white">
+                                <i class="fa-solid fa-user-tie text-indigo-500 text-lg"></i>
+                                </div>
+                                <h3 class="font-bold text-gray-800 text-sm">MonzurulAlam</h3>
+                            </div>
+                            <div id="patient-MonzurulAlam-medicine-list" class="p-3 overflow-y-auto custom-scrollbar space-y-2 flex-grow bg-white reminder-container">
+                            
+                                    <label class="reminder-item flex items-center justify-between p-2 bg-indigo-50/50 rounded-lg text-xs cursor-pointer hover:bg-indigo-100/50 transition-colors">
+                                        <div class="flex items-center">
+                                            <div class="checkbox-wrapper mr-2 flex items-center justify-center w-5">
+                                                <input value="5" type="checkbox" class="rounded-checkbox reminder-checkbox">
+                                            </div>
+                                            <span class="text-gray-700">Cifibet</span>
+                                        </div>
+                                        <span class="font-bold text-red-600">1 Tablet</span>
+                                    </label>
+                                </div>
+                        
+                                <div class="p-3 border-t border-gray-50 bg-gray-50/50">
+                                    <button id="patient-MonzurulAlam-button" class="patient-update-btn w-full bg-indigo-600 text-white py-2 rounded-lg font-bold text-xs shadow-sm hover:bg-indigo-700 transition-colors flex items-center justify-center" disabled="">
+                                        <i class="fa-solid fa-circle-check mr-2"></i> Mark as Taken
+                                    </button>
+                                </div>
+                            
+                            </div></div>
+                    </div>
+                </section>
+            
+        </div>
+        
+        <section>
+            <h2 class="text-xl font-bold text-gray-800 mb-6 flex items-center">
+                <i class="fa-solid fa-bolt-lightning mr-2 text-yellow-500"></i> Quick Actions
+            </h2>
+            <div class="flex flex-wrap justify-center gap-4">
+                <a href="{% url 'medicinemanager:profile' %}" class="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-blue-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-blue-100 transition-colors">
+                        <i class="fa-solid fa-circle-user text-blue-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700">Profile</span>
+                </a>
+                <a href="{% url 'medicinemanager:add_patient' %}" class="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-green-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-green-100 transition-colors">
+                        <i class="fa-solid fa-user-plus text-green-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700">Add Patient</span>
+                </a>
+                <a href="{% url 'medicinemanager:attendant_add_medicine' %}" class="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-100 transition-colors">
+                        <i class="fa-solid fa-database text-purple-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700 leading-tight">Add Medicines</span>
+                </a>
+                <a href="{% url 'medicinemanager:attendant_add_medicine_stock' %}" class="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-purple-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-purple-100 transition-colors">
+                        <i class="fa-solid fa-boxes-stacked text-orange-500 text-xl"></i>    
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700 leading-tight">Add Medicine Stock</span>
+                </a>
+                <a href="{% url 'medicinemanager:attendant_add_medicine_schedule' %}" class="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-orange-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-orange-100 transition-colors">
+                        <i class="fa-solid fa-calendar-plus text-orange-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700 leading-tight">Create Schedule</span>
+                </a>
+                <a href="{% url 'medicinemanager:medicine_schedule' %}" class="group w-full sm:w-[calc(50%-1rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(20%-1rem)] bg-white p-6 rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-all text-center flex flex-col items-center">
+                    <div class="w-12 h-12 bg-teal-50 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:bg-teal-100 transition-colors">
+                        <i class="fa-solid fa-clipboard-list text-teal-600 text-xl"></i>
+                    </div>
+                    <span class="text-sm font-semibold text-gray-700 leading-tight">View Schedules</span>
+                </a>
+            </div>
+        </section>
+
+    </div>
+{% endblock %}
+{% block script %}
+    <script type="text/javascript" src="{% static 'medicinemanager/js/dashboard.js' %}">
+    </script>
+{% endblock %}

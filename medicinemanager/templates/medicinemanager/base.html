@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=yes">
+    <title>{% block title %}{% endblock %}</title>
+
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome CDN from cdnjs -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    {% load static %}
+    {% block css %}{% endblock %}
+
+    <link type="text/css" rel="stylesheet" href="{% static 'medicinemanager/css/base.css' %}">
+
+    <style>
+        :root {
+            --success-custom: #15803d;
+        }
+        .bg-success-custom { background-color: var(--success-custom); }
+
+        /* Slideshow Transition */
+        .slideshow-container { position: relative; overflow: hidden; }
+        .slide {
+            position: absolute;
+            inset: 0;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+        }
+        .slide.active { opacity: 1; z-index: 10; }
+
+        /* Sidebar Sizing */
+        .sidebar-ad {
+            width: 160px;
+            height: 600px;
+            position: sticky;
+            top: 80px; /* Below header */
+        }
+
+        /* Bottom Floating Bar */
+        #bottom-ad-bar {
+            position: fixed;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+            z-index: 40;
+            transition: bottom 0.1s ease;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-gray-50 flex flex-col">
+    <header class="sticky top-0 z-50 shadow-md">
+        <nav class="bg-success-custom px-4 py-3 sm:px-6">
+            <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between">
+                <a href="{% url 'medicinemanager:index' %}" class="flex items-center text-white text-xl font-bold tracking-tight">
+                    <i class="fa-solid fa-pills mr-3 text-2xl"></i>
+                    <span>Personal Medicine Manager</span>
+                </a>
+                <button id="menu-btn" type="button" class="lg:hidden text-white hover:text-green-100">
+                    <i id="menu-icon" class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div id="nav-menu" class="hidden lg:flex items-center">
+                    <ul class="flex flex-col lg:flex-row space-y-2 lg:space-y-0 lg:space-x-2 text-sm font-medium">
+                        <li>
+                            <a href="{% url 'medicinemanager:index' %}" class="flex items-center text-white {% if request.resolver_match.view_name == 'medicinemanager:index' %}bg-white/20 font-bold py-2 px-3 rounded-md{% else %}hover:bg-white/10 py-2 px-3 rounded-md{% endif %}">
+                                <i class="fa-solid fa-house mr-2 w-4 text-center"></i> Home
+                            </a>
+                        </li>
+                        {% if request.user.is_authenticated %}
+                            <li>
+                                <a href="{% url 'medicinemanager:dashboard' %}" class="flex items-center text-white {% if request.resolver_match.view_name == 'medicinemanager:dashboard' %}bg-white/20 font-bold py-2 px-3 rounded-md{% else %}hover:bg-white/10 py-2 px-3 rounded-md{% endif %}">
+                                    <i class="fa-solid fa-clipboard-list mr-2 w-4 text-center"></i> Dashboard
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'medicinemanager:logout' %}" class="flex items-center text-green-100 hover:text-white hover:bg-white/10 py-2 px-3 rounded-md">
+                                    <i class="fa-solid fa-arrow-right-from-bracket mr-2 w-4 text-center"></i> Logout
+                                </a>
+                            </li>
+                        {% else %}
+                            <li>
+                                <a href="{% url 'medicinemanager:login' %}" class="flex items-center text-white {% if request.resolver_match.view_name == 'medicinemanager:login' %}bg-white/20 font-bold py-2 px-3 rounded-md{% else %}hover:bg-white/10 py-2 px-3 rounded-md{% endif %}">
+                                    <i class="fa-solid fa-right-to-bracket mr-2 w-4 text-center"></i> Login
+                                </a>
+                            </li>
+                            <li>
+                                <a href="{% url 'medicinemanager:register' %}" class="flex items-center text-white {% if request.resolver_match.view_name == 'medicinemanager:register' %}bg-white/20 font-bold py-2 px-3 rounded-md{% else %}hover:bg-white/10 py-2 px-3 rounded-md{% endif %}">
+                                    <i class="fa-solid fa-user-plus mr-2 w-4 text-center"></i> Create Account
+                                </a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+    
+    <!-- Main Content Layout with Sidebars -->
+    <div class="flex-grow flex justify-center w-full max-w-[1600px] mx-auto px-4 gap-6 relative">
+
+        <!-- Dynamic Body Content -->
+        <main class="flex-grow max-w-4xl py-8 mb-24">
+            {% block body %}
+            {% endblock %}
+        </main>
+    </div>
+
+    <!-- Footer -->
+    <footer id="main-footer" class="bg-slate-900 text-slate-400 py-12 relative z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center gap-8">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-pills text-white text-2xl"></i>
+                    <span class="text-xl font-bold text-white tracking-tight">Personal Medicine Manager</span>
+                </div>
+                <p class="text-sm">&copy; 2026 Personal Medicine Manager. For reminder purposes only.</p>
+                <div class="flex space-x-6">
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-x-twitter"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-instagram"></i></a>
+                    <a href="#" class="hover:text-white transition"><i class="fa-brands fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="mt-6 flex justify-center space-x-4 text-xs font-medium text-gray-400">
+                <a href="#" class="hover:underline">Privacy Policy</a>
+                <span>•</span>
+                <a href="#" class="hover:underline">Terms of Service</a>
+                <span>•</span>
+                <a href="#" class="hover:underline">Help Center</a>
+                <span>•</span>
+                <a href="#" class="hover:underline">Contact Support</a>
+            </div>
+            <div class="mt-8 pt-8 border-t border-slate-800 text-center text-xs">
+                <p>Disclaimer: This platform does not sell drugs. Always consult with a medical professional for clinical decisions.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script type="text/javascript" src="{% static 'medicinemanager/js/base.js' %}"></script>
+    {% block script %}{% endblock %}
+</body>
+</html>
