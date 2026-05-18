@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'onlinehealthcareandsupport.urls'
+ROOT_URLCONF = 'django_website.urls'
 
 TEMPLATES = [
     {
